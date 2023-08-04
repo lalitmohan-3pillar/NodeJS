@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> </title>  
+       <link rel="stylesheet" type="text/css" href="/static/css/product.css" />
+  </head>
+  <body class="body-background">
+    {{>navbar data=details}}
+ 
+    
+
+     <div class="row mt-5">
+    <div class="col-md-3 offset-md-4">
+        <div class="guest-form-card card">
+            <div class="card-header text-center">
+                <h2>Purchase Order</h2> 
+            </div>
+            <form action ="/assessment/purchaseOrder" method="POST">
+            <div class="card-body">
+              {{#if Carts}}
+              <table>
+                     
+                {{!-- <form action={{posturl}} method="POST"> --}}
+                   {{#each Carts}} 
+                   <tr>
+                    <td>
+                      <strong>{{this._doc.productName}}  </strong>   x <span>{{this._doc.productQty}}</span>: 
+                  </td>
+                  <td >
+                    <strong>{{this._doc.productQty}}*{{this._doc.productPrice}}</strong> 
+                  </td>
+                  <td>
+                    ={{this.total}}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                     <a type="button" class="btn btn-sm btn-primary product-btn"  
+                        href="/assessment/addToCart?productName={{this._doc.productName}}" ><strong>+</strong></a>
+                  </td>
+                   <td>
+                     <a type="button" class="btn btn-sm btn-primary product-btn"  
+                         href="/assessment/removeFromCart?productName={{this._doc.productName}}"><strong>-</strong></a>
+                  </td>
+                   <td>
+                     <a type="button" class="btn btn-sm btn-primary product-btn"  
+                        href="/assessment/removeFromCart?productName={{this._doc.productName}}&All=1" ><strong>Remove</strong></a>
+                  </td>
+                </tr> 
+                   
+                    {{/each}} 
+                     <tr>
+                  <td colspan="3">
+                    <div class="form-group">
+                        <label for ="username">Address</label>
+                        <input type="text" id="address" class="form-control" name="address" required />                       
+                    </div>              
+                  </td>
+                </tr>        
+              </table>  
+               <div class="text-right">    
+                  Total <strong> =   {{totalPriceForAll}} </strong>
+              </div>
+              {{/if}} 
+
+               {{#if name}} 
+               <table> 
+                   <tr>
+                      <td>
+                          <strong>{{name}}  </strong> 
+                      </td>
+                      <td>
+                        <strong>{{price}}</strong> 
+                      </td>
+                      <td>
+
+                      </td>
+                  </tr>
+                 <tr>
+                    <td colspan="3">
+                      <div class="form-group">
+                          <label for ="username">Address</label>
+                          <input type="text" id="address" class="form-control" name="address" required />   
+                          <input type="hidden" class="form-control" name="name" value="{{name}}" /> 
+                          <input type="hidden" class="form-control" name="price" value="{{price}}" />                       
+                      </div>              
+                    </td>
+                </tr>        
+              </table>  
+                    {{/if}}         
+           
+            </div>    
+            <div class="text-center">        
+                  <input type="submit" class="btn btn-primary btn-block mt-1" value="Purchase"/>           
+            </div>
+            </form> 
+        </div>
+    </div>
+</div> 
+    {{>footer}}
+    </body>
+</html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> {{data.brandName}}</title>  
+        <link rel="stylesheet" type="text/css" href="/static/css/product.css" />
+  </head>
+  <body class="body-background">
+    {{>navbar data=details}}
+    
+    {{#if purchase}}
+     <div class="row mt-5">
+    <div class="col-md-4 offset-md-4">
+        <div class="guest-form-card card">
+            <div class="card-header text-center">
+                <h2>Orders</h2> 
+            </div>
+            <div class="card-body">
+              <table > 
+                 <tr>
+                 <th>                    
+                    ProductName
+                  </th>
+                   <th>
+                     ProductQty
+                    </th>
+                     <th>
+                        ProductPrice
+                      </th>  
+                      </tr>   
+                {{#each purchase}}                 
+                          
+                {{#each this._doc.items}}              
+              
+                   <tr>
+                      <td>
+                          {{this.this.productName}} 
+                      </td>
+                     
+                      <td>
+                        {{this.this.productQty}}
+                      </td>
+
+                      <td>
+                        {{this.this.productPrice}}
+                      </td>
+                  </tr>
+                  {{/each}}                   
+                  <tr>
+                     <td colspan="3" >
+                        Purchased on {{this.purchaseDate1}} 
+                        <span style="margin-left:9%">Total </span><strong style="margin-left:13%">=  {{this.total}}</strong>
+                      </td>                      
+                  </tr>
+                  <tr style="border-bottom: 1px solid #000;">
+                    <td colspan="3"></td> <!-- Use colspan to span all columns -->
+                  </tr>
+                  
+                {{/each}} 
+              </table> 
+            </div>           
+        </div>
+    </div>
+</div>
+
+{{else}}
+    <div class="alert alert-danger mx-5 my-5 text-center" >
+          Nothing to show  
+    </div>
+   {{/if}}
+
+    {{>footer}}
+    </body>
+</html>

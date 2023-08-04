@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> </title>  
+     <link rel="stylesheet" type="text/css" href="/static/css/product.css" />
+  </head>
+  <body class="body-background">
+    {{>navbar data=details}} 
+
+    {{#if Carts}}
+
+     <div class="row mt-5">
+    <div class="col-md-4 offset-md-4">
+        <div class="guest-form-card card">
+            <div class="card-header text-center">
+                <h2>Cart</h2> 
+            </div>
+            <div class="card-body">
+              <table>
+                   {{#each Carts}} 
+                   <tr>
+                  <td>
+                      <strong>{{this._doc.productName}}  </strong>   x <span>{{this._doc.productQty}}</span>: 
+                  </td>
+                  <td >
+                    <strong>{{this._doc.productQty}}*{{this._doc.productPrice}}</strong> 
+                  </td>
+                  <td>
+                    ={{this.total}}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                     <a type="button" class="btn btn-sm btn-primary product-btn"  
+                        href="/assessment/addToCart?productName={{this._doc.productName}}" ><strong>+</strong></a>
+                  </td>
+                   <td>
+                     <a type="button" class="btn btn-sm btn-primary product-btn"  
+                         href="/assessment/removeFromCart?productName={{this._doc.productName}}"><strong>-</strong></a>
+                  </td>
+                   <td>
+                     <a type="button" class="btn btn-sm btn-primary product-btn"  
+                        href="/assessment/removeFromCart?productName={{this._doc.productName}}&All=1" ><strong>Remove</strong></a>
+                  </td>
+                </tr> 
+                   
+                    {{/each}} 
+                     <tr>
+                      <td colspan="3">
+                        <span style="margin-left:60%">Total</span>   <strong> =   {{totalPriceForAll}} </strong>
+                      </td>
+                     </tr>
+                    </table>                
+                  
+                {{!-- </form> --}}
+                
+            </div>
+            <a  type="button" class="btn btn-sm btn-outline-primary" 
+              href="/assessment/purchaseOrder">Buy Now</a>
+
+        </div>
+    </div>
+</div> 
+{{else}}
+    <div class="alert alert-danger mx-5 my-5 text-center" >
+          Nothing to show  
+    </div>
+{{/if}}
+
+    {{>footer}}
+    </body>
+</html>

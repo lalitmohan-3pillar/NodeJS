@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> </title>  
+       <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="/static/css/product.css"> 
+  </head>
+  <body class="body-background">
+    {{>navbar data=details}}   
+    <div class="container">
+
+   <div class="admin-product-form-container">
+
+      <form action="" method="post" enctype="multipart/form-data">
+         <h3>add a new product</h3>
+         <input type="text" placeholder="enter product name" name="product_name" class="box">
+         <input type="number" placeholder="enter product price" name="product_price" class="box">
+         <input type="file" accept="image/png, image/jpeg, image/jpg" name="product_image" class="box">
+         <input type="submit" class="btn" name="add_product" value="add product">
+      </form>
+
+   </div>
+
+      <div class="product-display">
+      <table class="product-display-table">
+         <thead>
+         <tr>
+            <th>product image</th>
+            <th>product name</th>
+            <th>product price</th>
+            <th>action</th>
+         </tr>
+         </thead>
+       
+         <tr>
+            <td><img src="" height="100" alt=""></td>
+            <td></td>
+            <td></td>
+            <td>
+               <a href="" class="btn"> <i class="fas fa-edit"></i> edit </a>
+               <a href="" class="btn"> <i class="fas fa-trash"></i> delete </a>
+            </td>
+         </tr>
+ 
+      </table>
+   </div>
+</div>
+    {{>footer}}
+  </body>
+</html>
