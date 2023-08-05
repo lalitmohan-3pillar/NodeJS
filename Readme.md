@@ -16,17 +16,25 @@ Welcome to our E-Commerce Application, where you can explore a wide range of pro
 
 ## Description
 
-This application is one-stop destination for all your shopping needs. which cover login and registration functionality with Authentication of jwt. Having Product Catalog with search functionality by Name and Category. You can add the product into Cart and can go Cart any time. If you are ready to purchase the product you can purchase from Cart or directly by product detail page without adding into Cart. You can create the Purchase Order by filling address only. Theres is functionality in which You can see the Order History which describe all product you purchased till now .
+This application is one-stop destination for all your shopping needs. which cover login and registration functionality with Authentication of jwt. Having Product Catalog with search functionality by Name and Category. You can add the product into Cart and can go Cart any time. If you are ready to purchase the product you can purchase from Cart or directly by product detail page without adding into Cart. You can create the Purchase Order by filling address only. Theres is functionality in which You can see the Order History that describe all product you purchased till now .
+
+This application having jwt token for authenticaton.
+Mocha Test with Chai library.
+Appplicaiton is Dockerized. 
+
 
 ## Features
 
-   - [User Authentication](:)  Create an account, log in, and enjoy personalized shopping experiences.
+   - [User Authentication](:)  Create an account, log in, and enjoy personalized shopping experiences.I have created the JWT token also which pass with api request so that only authenticated user can request api.
+
    - [Product Catalog](:) Browse and search through an extensive collection of products, complete with detailed information and images.
    - [Product Management](:) Easily add products to your cart for future purchase.
    - [Cart](:) View, manage, and edit the items in your cart before making a purchase decision.
    - [Order History](:) Access a comprehensive record of all your past purchases, making it simple to track your spending and favorite products.
     -[User Profile](:) Update your personal information, shipping addresses, and payment methods for a smoother checkout  process.
    - [Wishlist](:) Save your favorite products for future reference and quick access.
+   - [Mocha Test](:) This application having Mocha Test with chai library.
+   - [Dockerized](:) Application is dockerized and running on container. 
     
 
 ## Getting Started

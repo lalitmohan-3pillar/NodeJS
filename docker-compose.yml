@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  # MongoDB services
+  mongo_db:
+    container_name: db_container
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongo_db:/data/db
+
+   # Node API service
+  api:  
+     build: .
+     ports:
+       - 4000:4205     
+     environment:  
+        PORT: 4205
+        CONNECTION_STRING: mongodb://mongo_db:27017/Assesment
+        PREFIXPATH: /assessment
+        ACCESS_TOKEN_SECRET: lalit.mohan@gmail.com
+     depends_on:
+       - mongo_db
+volumes:
+  mongo_db: {}     

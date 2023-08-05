@@ -25,7 +25,7 @@ const gethome= async (req,res)=>{
             req.flash('message','Please Login')            
             res.redirect(`${process.env.PREFIXPATH}/login`);
         }           
-    }    
+    }
+       
 }
-
 module.exports= {gethome};

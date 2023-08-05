@@ -3,7 +3,7 @@ const Detail = require('../src/models/detail')
 
 const dbconnection = async ()=>{
    await mongoose.connect(process.env.CONNECTION_STRING);
-   console.log('connection success');
+   console.log('connection success but');
 };
 
 const companyDetail = async ()=>{

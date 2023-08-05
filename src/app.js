@@ -49,3 +49,5 @@ app.use(process.env.PREFIXPATH,require('../src/routes/mainRoutes'));
 app.listen(PORT,()=>{
     console.log(`app is running on port ${PORT}`);
 });
+
+module.exports =app;
