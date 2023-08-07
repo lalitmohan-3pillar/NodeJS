@@ -20,6 +20,9 @@ const User = mongoose.Schema({
     confirmpassword:{
         type:String,
         required:[true,'Confirm Password must be entered']
+    },
+    shippingAddress:{
+        type:String,        
     }
 },
 {

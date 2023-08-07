@@ -19,6 +19,7 @@ Welcome to our E-Commerce Application, where you can explore a wide range of pro
 This application is one-stop destination for all your shopping needs. which cover login and registration functionality with Authentication of jwt. Having Product Catalog with search functionality by Name and Category. You can add the product into Cart and can go Cart any time. If you are ready to purchase the product you can purchase from Cart or directly by product detail page without adding into Cart. You can create the Purchase Order by filling address only. Theres is functionality in which You can see the Order History that describe all product you purchased till now .
 
 This application having jwt token for authenticaton.
+Menu is created Dynamically, Means you can change logo and menu anytime. 
 Mocha Test with Chai library.
 Appplicaiton is Dockerized. 
 

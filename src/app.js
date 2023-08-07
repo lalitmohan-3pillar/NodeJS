@@ -10,6 +10,7 @@ const session = require('express-session')
 var flash = require('connect-flash');
 const { validateToken } = require('../middleware/validateTokenHandler');
 const { gethome } = require('./controllers/homeController');
+const customMiddleware = require('../middleware/session_Details'); 
 // const helper = require('./helper');
 
 dbconnect();
@@ -40,6 +41,9 @@ app.set('views','views')
 
 //app.get(process.env.PREFIXPATH,validateToken,gethome);
 hbs.registerPartials('views/partials');
+
+// Use the custom middleware for all routes
+app.use(customMiddleware);
 
 //app.use(validateToken);
 //Set the Routes path

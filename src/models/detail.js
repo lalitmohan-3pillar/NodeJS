@@ -5,7 +5,8 @@ const Detail=mongoose.Schema({
     brandIconUrl:String,
     links:[{
         label:String,
-        url:String
+        url:String,
+        icon:String
     }],
 });
 

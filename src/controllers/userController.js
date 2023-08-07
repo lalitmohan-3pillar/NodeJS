@@ -30,15 +30,15 @@ const createUser = asyncHandler(async(req,res)=>{
         }
         else{  
              //Hash Password
-             const hashPassword = await bcrypt.hash(password,10);
-             console.log('hashPassword',hashPassword)
+             const hashPassword = await bcrypt.hash(password,10);             
 
             await User.create({
                 name:name,
                 email:email,
                 username:username,
                 password:hashPassword,
-                confirmpassword:password
+                confirmpassword:password,
+                shippingAddress:''
             });
            
             req.flash('success-message','User created successfully')            
@@ -75,6 +75,7 @@ const loginUser = asyncHandler(async(req,res)=>{
                 if(details!==null){                     
                     session=req.session;
                     session.name=user.name;
+                    session.username=user.username;
                     session.email=user.email;
                     session.jwt=accessToken;
                      if(req.body.remember)
@@ -102,8 +103,9 @@ const loginUser = asyncHandler(async(req,res)=>{
 }
 });
 
-const getlogin =async (req,res)=>{  
-    const details= await Detail.findOne();   
+const getlogin =async (req,res)=>{    
+    const details= await Detail.findOne();
+    console.log('details',details)
     if(details!==null){   
          if(cookie.username !='') {   
                 res.render('login',{ 
@@ -122,7 +124,7 @@ const getlogin =async (req,res)=>{
                 posturl:`${process.env.PREFIXPATH}/login`,
             });      
     }   
-}
+ }
 };
 
 const getregister = async (req,res)=>{ 
@@ -157,4 +159,37 @@ const logout = async (req,res)=>{
                   }  
     }   
 }
-module.exports ={createUser,loginUser,getlogin,getregister,logout}
+
+const profile = async (req,res)=>{     
+    const user = await User.findOne({username: req.session.username});
+    //console.log(user)
+       res.render('userProfile',{
+            details:res.locals.menuItemsWithCart,
+            UserInfo:user,
+            session:req.session.name,
+            changeprofile:req.flash('profileChange'),
+            messages:req.flash('messages')
+            
+    });
+}
+
+const changeProfile = asyncHandler(async(req,res)=>{ 
+            const {name,email,shippingAddress}=req.body;           
+            if(!name || !email || !shippingAddress)
+            { 
+                req.flash('messages','All fields are mandatory')
+                res.redirect(`${process.env.PREFIXPATH}/profile`);
+            }
+            else{    
+                await User.findOneAndUpdate({username: req.session.username}, 
+                    {   name:name,email:email,shippingAddress:shippingAddress
+                    },
+                    {new:true})
+
+                req.flash('profileChange','Profile Changed successfully') ;                          
+                res.redirect(`${process.env.PREFIXPATH}/profile`); 
+            }     
+});
+
+
+module.exports ={createUser,loginUser,getlogin,getregister,logout,profile,changeProfile}

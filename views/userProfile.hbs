@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home Page </title>  
+       <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="/static/css/product.css"> 
+  </head>
+  <body class="body-background">
+    {{>navbar data=details}}   
+      <div class="row mt-5">
+    <div class="col-md-4 offset-md-4">
+        <div class="guest-form-card card">
+            <div class="card-header text-center">
+                <h2>Change Profile</h2>           
+                    {{#if messages}}                 
+                      <div class="alert alert-danger">{{messages}}</div> 
+                    {{/if}} 
+
+                    {{#if changeprofile}}                 
+                      <div class="alert alert-success">{{changeprofile}}</div> 
+                    {{/if}} 
+              </div>
+            <div class="card-body">
+                <form action="/assessment/profile" method="POST">
+                    <div class="form-group">
+                        <label for ="name">Name</label>
+                        <input id="name" class="form-control" name="name" value="{{UserInfo.name}}"/>
+                        <span class="invalid-feedback">Name can't be blank.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for ="email">Email</label>
+                        <input id="email" class="form-control" name="email"  value="{{UserInfo.email}}"  />
+                        <span class="invalid-feedback">
+                       
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for ="shippingAddress">Shipping Address</label>
+                        <input id="shippingAddress" type="text" class="form-control" name="shippingAddress" value="{{UserInfo.shippingAddress}}"     />
+                        <span class="invalid-feedback"> 
+                        </span>
+                    </div>                                       
+                    <input type="submit" class="btn btn-primary btn-block mt-2" value="Update"/>   
+                    <a class="btn btn-secondary btn-block mt-2" type="submit" href="/assessment">Cancel</a>                     
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+    {{>footer}}
+  </body>
+</html>

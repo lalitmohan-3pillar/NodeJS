@@ -68,29 +68,29 @@
     {{#each product}}
     <div class="cards"> 
       <div class='card'>
-        <a href="/assessment/productDetail?productName={{this.productName}}">
-          <img class='card__img' src={{this.productUrl}} /> 
+        <a href="/assessment/productDetail?productName={{this._doc.productName}}">
+          <img class='card__img' src={{this._doc.productUrl}} /> 
         </a>
         
         
         <div class="card__info" >
-          <p class="card__category"> <strong>{{this.productName}}  </strong>  </p>
+          <p class="card__category"> <strong>{{this._doc.productName}}  </strong>  </p>
             <p class="card__title">
             
-                <strong>Price:</strong>  {{this.productPrice}}              
+                <strong>Price:</strong>  {{this._doc.productPrice}}              
             </p>         
-          <p class="card__title"> {{this.productDescription }} ...</p>
+          <p class="card__title"> {{this.description }} ...</p>
           <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
 
               <a type="button" class="btn btn-sm btn-primary product-btn" 
-              href="/assessment/addToCart?productName={{this.productName}}">Add to Cart</a>
+              href="/assessment/addToCartByProduct?productName={{this._doc.productName}}">Add to Cart</a>
 
               <a type="button" class="btn btn-sm btn-outline-secondary product-btn" 
-                href="/assessment/productDetail?productName={{this.productName}}">View Details</a>
+                href="/assessment/productDetail?productName={{this._doc.productName}}">View Details</a>
 
                 <a type="button" class="btn btn-sm btn-primary product-btn" 
-                href="/assessment/editProduct?productName={{this.productName}}">Edit</a>
+                href="/assessment/editProduct?productName={{this._doc.productName}}">Edit</a>
             </div>
           
           </div>

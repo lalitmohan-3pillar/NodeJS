@@ -38,15 +38,15 @@
                 <tr>
                   <td>
                      <a type="button" class="btn btn-sm btn-primary product-btn"  
-                        href="/assessment/addToCart?productName={{this._doc.productName}}" ><strong>+</strong></a>
+                        href="/assessment/addToCartFromPO?productName={{this._doc.productName}}" ><strong>+</strong></a>
                   </td>
                    <td>
                      <a type="button" class="btn btn-sm btn-primary product-btn"  
-                         href="/assessment/removeFromCart?productName={{this._doc.productName}}"><strong>-</strong></a>
+                         href="/assessment/removeFromOrder?productName={{this._doc.productName}}"><strong>-</strong></a>
                   </td>
                    <td>
                      <a type="button" class="btn btn-sm btn-primary product-btn"  
-                        href="/assessment/removeFromCart?productName={{this._doc.productName}}&All=1" ><strong>Remove</strong></a>
+                        href="/assessment/removeFromOrder?productName={{this._doc.productName}}&All=1" ><strong>Remove</strong></a>
                   </td>
                 </tr> 
                    
@@ -55,7 +55,7 @@
                   <td colspan="3">
                     <div class="form-group">
                         <label for ="username">Address</label>
-                        <input type="text" id="address" class="form-control" name="address" required />                       
+                        <input type="text" id="address" class="form-control" name="address" value="{{address}}" required />                       
                     </div>              
                   </td>
                 </tr>        
@@ -63,6 +63,9 @@
                <div class="text-right">    
                   Total <strong> =   {{totalPriceForAll}} </strong>
               </div>
+              <div class="text-center">        
+                  <input type="submit" class="btn btn-primary btn-block mt-1" value="Purchase"/>           
+            </div>
               {{/if}} 
 
                {{#if name}} 
@@ -82,19 +85,20 @@
                     <td colspan="3">
                       <div class="form-group">
                           <label for ="username">Address</label>
-                          <input type="text" id="address" class="form-control" name="address" required />   
+                          <input type="text" id="address" class="form-control" name="address" value="{{address}}" required />   
                           <input type="hidden" class="form-control" name="name" value="{{name}}" /> 
                           <input type="hidden" class="form-control" name="price" value="{{price}}" />                       
                       </div>              
                     </td>
                 </tr>        
-              </table>  
+              </table>
+              <div class="text-center">        
+                  <input type="submit" class="btn btn-primary btn-block mt-1" value="Purchase"/>           
+            </div>  
                     {{/if}}         
            
             </div>    
-            <div class="text-center">        
-                  <input type="submit" class="btn btn-primary btn-block mt-1" value="Purchase"/>           
-            </div>
+            
             </form> 
         </div>
     </div>

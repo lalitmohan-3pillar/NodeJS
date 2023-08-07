@@ -1,7 +1,7 @@
 const express = require('express');
 const Product = require('../models/product');
 const routes= express.Router();
-const {createUser,loginUser,getlogin,getregister,logout}= require('../controllers/userController');
+const {createUser,loginUser,getlogin,getregister,logout,profile,changeProfile}= require('../controllers/userController');
 const {gethome}= require('../controllers/homeController');
 const { getorders } = require('../controllers/ordersController');
 const { getcart,addToCart,removeFromCart } = require('../controllers/cartController');
@@ -33,6 +33,8 @@ routes.route('/register').get(getregister);
 routes.route('/register').post(createUser)
 
 routes.route('/logout').get(logout);
+routes.route('/profile').get(profile)
+routes.route('/profile').post(changeProfile)
 
 routes.route('/addproduct').get(getproduct);
 routes.route('/editProduct').get(editproduct);
@@ -131,8 +133,12 @@ routes.route('/productDetail').get(getproductDetail);
 
 routes.route('/delete/:productName').delete(deleteProduct);
 
-routes.route('/addToCart').get(addToCart);
+routes.route('/addToCartByProduct').get(addToCart);
+routes.route('/addToCartFromCart').get(addToCart);
+routes.route('/addToCartFromPO').get(addToCart);
+
 routes.route('/removeFromCart').get(removeFromCart);
+routes.route('/removeFromOrder').get(removeFromCart);
 
 routes.route('/purchaseOrder').get(purchaseOrder);
 

@@ -3,7 +3,7 @@ const Detail = require('../src/models/detail')
 
 const dbconnection = async ()=>{
    await mongoose.connect(process.env.CONNECTION_STRING);
-   console.log('connection success but');
+   console.log('connection success');
 };
 
 const companyDetail = async ()=>{
@@ -16,15 +16,18 @@ const companyDetail = async ()=>{
                 links:[
                         {
                             label:"Home",
-                            url:`${process.env.PREFIXPATH}`
+                            url:`${process.env.PREFIXPATH}`,
+                            icon:''
                         },
                         {
                             label:"Orders",
-                            url:`${process.env.PREFIXPATH}/orders`
+                            url:`${process.env.PREFIXPATH}/orders`,
+                            icon:''
                         },
                         {
                             label:"Cart",
-                            url:`${process.env.PREFIXPATH}/cart`
+                            url:`${process.env.PREFIXPATH}/cart`,
+                            icon:"/static/images/cart.png"
                         }
                     ],
             })

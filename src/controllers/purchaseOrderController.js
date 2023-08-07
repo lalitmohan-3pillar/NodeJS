@@ -1,21 +1,18 @@
-const Product = require('../models/product');
-const Detail = require('../models/detail');
 const Cart = require('../models/cart');
 const Purchase = require('../models/purchase');
 const asyncHandler = require('express-async-handler');
+const User= require('../models/user')
 
 
-
-const purchaseOrder = asyncHandler(async(req,res)=>{ 
-    const details= await Detail.findOne();   
-    if(details!==null){ 
-        if(req.session.name){
+const purchaseOrder = asyncHandler(async(req,res)=>{   
+    const user = await User.findOne({username: req.session.username});
             if(req.query.productName){                            
                 res.render('purchaseOrder',{
-                    details:details,
+                    details:res.locals.menuItemsWithCart,
                     session:req.session.name,
                     price:req.query.productPrice,
-                    name:req.query.productName
+                    name:req.query.productName,
+                    address:user.shippingAddress
                 });
             }
             else{
@@ -27,25 +24,17 @@ const purchaseOrder = asyncHandler(async(req,res)=>{
     
                 const totalPriceForAll = outputArray.reduce((total, item) => total + item.total, 0);                 
                 res.render('purchaseOrder',{
-                    details:details,
+                    details:res.locals.menuItemsWithCart,
                     session:req.session.name,
                     Carts:outputArray,
-                    totalPriceForAll:totalPriceForAll
+                    totalPriceForAll:totalPriceForAll,
+                    address:user.shippingAddress
                 });
-            }
-        }
-        else {
-            req.flash('message','Please Login')
-            res.redirect(`${process.env.PREFIXPATH}/login`);
-        }        
-    }    
+            }        
 });
 
 
-const postPurchaseOrder =asyncHandler(async(req,res)=>{ 
-    const details= await Detail.findOne();   
-    if(details!==null){ 
-        if(req.session.name){
+const postPurchaseOrder =asyncHandler(async(req,res)=>{   
             if(req.body.price){
                                 await Purchase.create({
                                     items:[{
@@ -57,12 +46,6 @@ const postPurchaseOrder =asyncHandler(async(req,res)=>{
                                     userAddress:req.body.address,
                                     purchaseDate:Date.now()
                                 }); 
-                        const purchase = await Purchase.find({productUser:req.session.name}).exec();            
-                                res.render('orders',{
-                                    details:details,
-                                    session:req.session.name,
-                                    purchase:purchase
-                                });
                     }
                     else{
                         const Carts = await Cart.find({productUser:req.session.name},'productName productPrice productQty').exec();  
@@ -73,21 +56,10 @@ const postPurchaseOrder =asyncHandler(async(req,res)=>{
                                 userAddress:req.body.address,
                                 purchaseDate:Date.now()
                             });
-                            await Cart.deleteMany({productUser:req.session.name})
-                        const purchase = await Purchase.find({productUser:req.session.name}).exec();            
-                        res.render('orders',{
-                            details:details,
-                            session:req.session.name,
-                            purchase:purchase
-                        });
+                            await Cart.deleteMany({productUser:req.session.name})                        
                        }
-                    } 
-        }
-        else {
-            req.flash('message','Please Login')
-            res.redirect(`${process.env.PREFIXPATH}/login`);
-        }        
-    }    
+                    }
+                    res.redirect(`${process.env.PREFIXPATH}/orders`);    
 });
 
 module.exports ={purchaseOrder,postPurchaseOrder}
