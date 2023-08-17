@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>controllers/cartController.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CartController.html">CartController</a><ul class='methods'><li data-type='method'><a href="module-CartController.html#~AddToCart">AddToCart</a></li><li data-type='method'><a href="module-CartController.html#~GetCart">GetCart</a></li><li data-type='method'><a href="module-CartController.html#~RemoveFromCart">RemoveFromCart</a></li></ul></li><li><a href="module-CartService.html">CartService</a><ul class='methods'><li data-type='method'><a href="module-CartService.html#~GetcartByUser">GetcartByUser</a></li><li data-type='method'><a href="module-CartService.html#~GetcartByUserAndProduct">GetcartByUserAndProduct</a></li><li data-type='method'><a href="module-CartService.html#~addToCart">addToCart</a></li><li data-type='method'><a href="module-CartService.html#~decrementCartQuantity">decrementCartQuantity</a></li><li data-type='method'><a href="module-CartService.html#~incrementCartQuantity">incrementCartQuantity</a></li><li data-type='method'><a href="module-CartService.html#~removeAllFromCart">removeAllFromCart</a></li></ul></li><li><a href="module-ProductService.html">ProductService</a><ul class='methods'><li data-type='method'><a href="module-ProductService.html#~GetProduct">GetProduct</a></li></ul></li><li><a href="module-UserController.html">UserController</a><ul class='methods'><li data-type='method'><a href="module-UserController.html#~CreateUser">CreateUser</a></li><li data-type='method'><a href="module-UserController.html#~GetLogin">GetLogin</a></li><li data-type='method'><a href="module-UserController.html#~GetProfile">GetProfile</a></li><li data-type='method'><a href="module-UserController.html#~GetRegister">GetRegister</a></li><li data-type='method'><a href="module-UserController.html#~Logout">Logout</a></li><li data-type='method'><a href="module-UserController.html#~PostLogin">PostLogin</a></li><li data-type='method'><a href="module-UserController.html#~UpdateProfile">UpdateProfile</a></li></ul></li><li><a href="module-UserService.html">UserService</a><ul class='methods'><li data-type='method'><a href="module-UserService.html#~ChangeProfile">ChangeProfile</a></li><li data-type='method'><a href="module-UserService.html#~CreateUser">CreateUser</a></li><li data-type='method'><a href="module-UserService.html#~GetUser">GetUser</a></li><li data-type='method'><a href="module-UserService.html#~LoginUser">LoginUser</a></li></ul></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">controllers/cartController.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const expressAsyncHandler = require('express-async-handler');
+const CartService = require('../services/cartService');
+const ProductService = require('../services/productService');
+/**
+ * This controller is handling request for Cart's operation
+ * @module CartController
+ */
+
+/** 
+ * This is for load cart details
+ * @function GetCart
+ * @api {get} /assessment/cart  load the cart page
+ * @apiName getcart
+ *
+ **/
+const getcart = expressAsyncHandler(async (req, res) => {
+
+    const Carts = await CartService.getcartByUser(req.session.username);
+    const outputArray = Carts.map(item => {
+        const total = item.productPrice * item.productQty;
+        return { ...item, total };
+    });
+
+    const totalPriceForAll = outputArray.reduce((total, item) => total + item.total, 0);
+    res.render('cart', {
+        details: res.locals.menuItemsWithCart,
+        session: req.session.name,
+        Carts: outputArray,
+        totalPriceForAll: totalPriceForAll
+    });
+});
+
+/**
+ * This is post method for addToCart 
+ * @api {post} /assessment/addToCartByProduct  or   /assessment/addToCartFromCart
+ * @apiName addToCart
+ * @function AddToCart
+ * @param {string} productName -product Name 
+ * @param {string} productUser -productUser session for the user
+ *
+ **/
+const addToCart = expressAsyncHandler(async (req, res) => {
+
+    const product = await ProductService.getproduct(req.query.productName);
+    if (product) {
+        const Carts = await CartService.getcartByUserAndProduct(req.session.username,req.query.productName);
+        if (Carts) {
+            await CartService.incrementCartQuantity(Carts.productQty,req.session.username,req.query.productName);                
+        }
+        else {
+            await CartService.addToCart(req.session.username,product.productName,product.productPrice);                
+        }
+        if ((req.path).includes('addToCartByProduct')) {
+            res.redirect(`${process.env.PREFIXPATH}`);
+        }
+        else if ((req.path).includes('addToCartFromCart')) {
+            res.redirect(`${process.env.PREFIXPATH}/cart`)
+        }
+        else {
+            res.redirect(`${process.env.PREFIXPATH}/purchaseOrder`)
+        }
+
+    }
+});
+
+/**
+ * This is post method for removeFromCart 
+ * @api {post} /assessment/removeFromCart  
+ * @apiName removeFromCart
+ * @function RemoveFromCart
+ * @param {string} productName -product Name 
+ * @param {string} productUser -productUser session for the user
+ *
+ **/
+const removeFromCart = expressAsyncHandler(async (req, res) => {
+
+    const Carts = await CartService.getcartByUserAndProduct(req.session.username,req.query.productName);
+    if (Carts &amp;&amp; req.query.All) {
+        await CartService.removeAllFromCart(req.session.username, req.query.productName);
+    }
+    else {
+        if (Carts.productQty > 0 &amp;&amp; Carts.productQty != 1) {
+            await CartService.decrementCartQuantity(Carts.productQty,req.session.username,req.query.productName);
+        }
+        else if (Carts.productQty == 1) {
+            await CartService.removeAllFromCart(req.session.username, req.query.productName);
+        }
+    }
+    if ((req.path).includes('removeFromCart')) {
+        res.redirect(`${process.env.PREFIXPATH}/cart`)
+    }
+    else {
+        res.redirect(`${process.env.PREFIXPATH}/purchaseOrder`)
+    }
+
+});
+
+module.exports = { getcart, addToCart, removeFromCart };</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Wed Aug 16 2023 18:36:20 GMT+0530 (India Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+</body>
+</html>

@@ -20,7 +20,7 @@ const customMiddleware = async(req, res, next) => {
       res.locals.menuItems= await Detail.findOne(); 
       
       // Set cart item count here
-      var Carts = await Cart.find({productUser:req.session.name}).exec();    
+      var Carts = await Cart.find({productUser:req.session.username}).exec();    
 
       res.locals.menuItemsWithCart={...res.locals.menuItems,cartCount:Carts.length}      
     

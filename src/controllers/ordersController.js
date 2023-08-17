@@ -2,7 +2,7 @@ const Purchase= require('../models/purchase');
 
 const getorders= async (req,res)=>{    
 
-        const purchase = await Purchase.find({productUser:req.session.name}).exec(); 
+        const purchase = await Purchase.find({productUser:req.session.username}).exec(); 
            const purchaseWithDate=purchase.map(obj=>{
                 return {
                     ...obj,

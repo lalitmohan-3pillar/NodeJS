@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>controllers/userController.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CartController.html">CartController</a><ul class='methods'><li data-type='method'><a href="module-CartController.html#~AddToCart">AddToCart</a></li><li data-type='method'><a href="module-CartController.html#~GetCart">GetCart</a></li><li data-type='method'><a href="module-CartController.html#~RemoveFromCart">RemoveFromCart</a></li></ul></li><li><a href="module-CartService.html">CartService</a><ul class='methods'><li data-type='method'><a href="module-CartService.html#~GetcartByUser">GetcartByUser</a></li><li data-type='method'><a href="module-CartService.html#~GetcartByUserAndProduct">GetcartByUserAndProduct</a></li><li data-type='method'><a href="module-CartService.html#~addToCart">addToCart</a></li><li data-type='method'><a href="module-CartService.html#~decrementCartQuantity">decrementCartQuantity</a></li><li data-type='method'><a href="module-CartService.html#~incrementCartQuantity">incrementCartQuantity</a></li><li data-type='method'><a href="module-CartService.html#~removeAllFromCart">removeAllFromCart</a></li></ul></li><li><a href="module-ProductService.html">ProductService</a><ul class='methods'><li data-type='method'><a href="module-ProductService.html#~GetProduct">GetProduct</a></li></ul></li><li><a href="module-UserController.html">UserController</a><ul class='methods'><li data-type='method'><a href="module-UserController.html#~CreateUser">CreateUser</a></li><li data-type='method'><a href="module-UserController.html#~GetLogin">GetLogin</a></li><li data-type='method'><a href="module-UserController.html#~GetProfile">GetProfile</a></li><li data-type='method'><a href="module-UserController.html#~GetRegister">GetRegister</a></li><li data-type='method'><a href="module-UserController.html#~Logout">Logout</a></li><li data-type='method'><a href="module-UserController.html#~PostLogin">PostLogin</a></li><li data-type='method'><a href="module-UserController.html#~UpdateProfile">UpdateProfile</a></li></ul></li><li><a href="module-UserService.html">UserService</a><ul class='methods'><li data-type='method'><a href="module-UserService.html#~ChangeProfile">ChangeProfile</a></li><li data-type='method'><a href="module-UserService.html#~CreateUser">CreateUser</a></li><li data-type='method'><a href="module-UserService.html#~GetUser">GetUser</a></li><li data-type='method'><a href="module-UserService.html#~LoginUser">LoginUser</a></li></ul></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">controllers/userController.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const asyncHandler = require('express-async-handler');
+var session = require('express-session')
+const cookie = require('cookie')
+const AdminService = require('../services/userService');
+const MenuDetailService = require('../services/menuDetailService');
+
+/**
+ * This controller is handling request for User's login/register
+ * @module UserController
+ */
+/** 
+
+ * This is for creating the New User
+ * @api {post} /assessment/register  Register the New User
+ * @apiName createUser
+ * @function CreateUser
+ * @param {string} name -Name of the User
+ * @param {string} email -E-mail of the User
+ * @param {string} username -Username of the User
+ * @param {string} password -Password of the User
+ * @param {string} confirmpassword -Confirmpassword of the User
+ *
+ **/
+const createUser = asyncHandler(async (req, res) => {
+    const { name, email, username, password, confirmpassword } = req.body;
+    if (!name || !email || !username || !password || !confirmpassword) {
+        req.flash('message', 'All fields are mandatory')
+        res.redirect(`${process.env.PREFIXPATH}/register`);
+    }
+    if (password !== confirmpassword) {
+        req.flash('message', 'password and confirmpassword not matched')
+        res.redirect(`${process.env.PREFIXPATH}/register`);
+    }
+    else {
+        const user = await AdminService.getUser(username);
+
+        if (user &amp;&amp; user.username === username) {
+            req.flash('message', `User with username '${user.username}' already present.`)
+            res.redirect(`${process.env.PREFIXPATH}/register`);
+        }
+        else {
+            await AdminService.createUser(req.body);
+
+            req.flash('success-message', 'User created successfully')
+            res.redirect(`${process.env.PREFIXPATH}/login`);
+        }
+    }
+})
+
+/**
+ * This is post method for loginUser 
+ * @api {post} /assessment/login  Login the User
+ * @apiName loginUser
+ * @function PostLogin
+ * @param {string} username -Username of the User
+ * @param {string} password -Password of the User
+ * @param {boolean} remember -Remember checkbox
+ *
+ **/
+const loginUser = asyncHandler(async (req, res) => {
+    const { username, password, remember } = req.body;
+    if (!username || !password) {
+        req.flash('message', 'Username and password both fields are mandatory')
+        res.redirect(`${process.env.PREFIXPATH}/login`);
+    }
+    else {
+        const accessUser = await AdminService.loginUser(username, password);
+        if (accessUser.user) {
+            const details = await MenuDetailService.Detail();
+            if (accessUser.accessToken) {
+                if (details !== null) {
+                    session = req.session;
+                    session.name = accessUser.user.name;
+                    session.username = accessUser.user.username;
+                    session.email = accessUser.user.email;
+                    session.jwt = accessUser.accessToken;
+                    if (remember) {
+                        cookie.username = username;
+                        cookie.password = password;
+                    }
+                    else {
+                        cookie.username = '';
+                        cookie.password = '';
+                    }
+                    res.redirect(`${process.env.PREFIXPATH}`);
+                }
+            }
+            else {
+                req.flash('message', 'Invalid Password')
+                res.redirect(`${process.env.PREFIXPATH}/login`);
+            }
+        }
+        else {
+            req.flash('message', 'Invalid username or password')
+            res.redirect(`${process.env.PREFIXPATH}/login`);
+        }
+    }
+});
+
+/**
+ * This is for load login details
+ * @function GetLogin
+ * @api {get} /assessment/login  Login the User
+ * @apiName getlogin
+ *
+ **/
+
+const getlogin = async (req, res) => {
+    const details = await MenuDetailService.Detail();
+    if (details !== null) {
+        if (cookie.username != '') {
+            res.render('login', {
+                details: details,
+                mymessages: req.flash('message'),
+                success_message: req.flash('success-message'),
+                posturl: `${process.env.PREFIXPATH}/login`,
+                username: cookie.username,
+                password: cookie.password
+            });
+        } else {
+            res.render('login', {
+                details: details,
+                mymessages: req.flash('message'),
+                success_message: req.flash('success-message'),
+                posturl: `${process.env.PREFIXPATH}/login`,
+            });
+        }
+    }
+};
+
+/**
+ * This is get method for load Register 
+ * @api {get} /assessment/register  register the User
+ * @apiName getregister
+ * @function GetRegister
+ **/
+const getregister = async (req, res) => {
+    const details = await MenuDetailService.Detail();
+    if (details !== null) {
+        res.render('register', {
+            details: details,
+            mymessages: req.flash('message'),
+            posturl: `${process.env.PREFIXPATH}/register`
+        });
+    }
+}
+
+/**
+ * This is logout page
+ * @function Logout
+ * @api {get} /assessment/logout  logout the User
+ * @apiName logout
+ *
+ **/
+const logout = async (req, res) => {
+    const details = await MenuDetailService.Detail();
+    if (details !== null) {
+        req.session.destroy((err) => {
+            if (err)
+                console.log(err);
+        })
+        if (cookie) {
+            res.render('login', {
+                details: details,
+                posturl: `${process.env.PREFIXPATH}/login`,
+                username: cookie.username,
+                password: cookie.password
+            });
+        } else {
+            res.render('login', {
+                details: details,
+                posturl: `${process.env.PREFIXPATH}/login`
+            });
+        }
+    }
+}
+
+/**
+ * This is load for profile
+ * @api {get} /assessment/profile  load the profile of the User
+ * @apiName profile
+
+ * @function GetProfile
+ **/
+const profile = async (req, res) => {
+    const user = await AdminService.getUser(req.session.username);
+    res.render('userProfile', {
+        details: res.locals.menuItemsWithCart,
+        UserInfo: user,
+        session: req.session.name,
+        changeprofile: req.flash('profileChange'),
+        messages: req.flash('messages')
+
+    });
+}
+
+/**
+ * This post method for update profile
+ * @api {post} /assessment/profile  update the profile of the User
+ * @apiName changeProfile
+ * @function UpdateProfile
+ * @param {string} name -name of the User
+ * @param {string} email -email of the User
+ * @param {boolean} shippingAddress -shippingAddress of the User
+ *
+ **/
+const changeProfile = asyncHandler(async (req, res) => {
+    const { name, email, shippingAddress } = req.body;
+    if (!name || !email || !shippingAddress) {
+        req.flash('messages', 'All fields are mandatory')
+        res.redirect(`${process.env.PREFIXPATH}/profile`);
+    }
+    else {
+
+        const changedProfile = await AdminService.changeProfile(req.session.username, req.body);
+        if (changedProfile) {
+            req.session.name = changedProfile;
+        }
+
+        req.flash('profileChange', 'Profile Changed successfully');
+        res.redirect(`${process.env.PREFIXPATH}/profile`);
+    }
+});
+
+
+module.exports = { createUser, loginUser, getlogin, getregister, logout, profile, changeProfile }</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Wed Aug 16 2023 18:36:20 GMT+0530 (India Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+</body>
+</html>

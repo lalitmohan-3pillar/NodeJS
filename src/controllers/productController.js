@@ -1,7 +1,5 @@
 const Product = require('../models/product');
 const asyncHandler = require('express-async-handler');
-var session = require('express-session')
-
 
 
 const getproduct = asyncHandler(async(req,res)=>{ 

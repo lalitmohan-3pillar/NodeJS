@@ -10,6 +10,7 @@ const { getproduct,editproduct,searchProduct,getproductDetail,filterProduct,dele
 const {purchaseOrder,postPurchaseOrder}    = require('../controllers/purchaseOrderController');
 const {validateToken} = require('../../middleware/validateTokenHandler');
 
+
 routes.route('/').get(validateToken,gethome); //private route
 
 routes.route('/search').get(validateToken,searchProduct);//private route

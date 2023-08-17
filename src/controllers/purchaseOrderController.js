@@ -3,7 +3,6 @@ const Purchase = require('../models/purchase');
 const asyncHandler = require('express-async-handler');
 const User= require('../models/user')
 
-
 const purchaseOrder = asyncHandler(async(req,res)=>{   
     const user = await User.findOne({username: req.session.username});
             if(req.query.productName){                            
@@ -16,7 +15,7 @@ const purchaseOrder = asyncHandler(async(req,res)=>{
                 });
             }
             else{
-                const Carts = await Cart.find({productUser:req.session.name}).exec();   
+                const Carts = await Cart.find({productUser:req.session.username}).exec();   
                 const outputArray = Carts.map(item => {
                     const total = item.productPrice * item.productQty;
                     return { ...item, total };
@@ -42,21 +41,22 @@ const postPurchaseOrder =asyncHandler(async(req,res)=>{
                                         productPrice: req.body.price,
                                         productQty:1
                                     }],
-                                    productUser:req.session.name,
+                                    productUser:req.session.username,
                                     userAddress:req.body.address,
                                     purchaseDate:Date.now()
                                 }); 
                     }
                     else{
-                        const Carts = await Cart.find({productUser:req.session.name},'productName productPrice productQty').exec();  
+                        const Carts = await Cart.find({productUser:req.session.username},
+                                                    'productName productPrice productQty').exec();  
                         if(Carts){  
                             await Purchase.create({
                                 items:Carts,
-                                productUser:req.session.name,
+                                productUser:req.session.username,
                                 userAddress:req.body.address,
                                 purchaseDate:Date.now()
                             });
-                            await Cart.deleteMany({productUser:req.session.name})                        
+                            await Cart.deleteMany({productUser:req.session.username})                        
                        }
                     }
                     res.redirect(`${process.env.PREFIXPATH}/orders`);    

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>services/cartService.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CartController.html">CartController</a><ul class='methods'><li data-type='method'><a href="module-CartController.html#~AddToCart">AddToCart</a></li><li data-type='method'><a href="module-CartController.html#~GetCart">GetCart</a></li><li data-type='method'><a href="module-CartController.html#~RemoveFromCart">RemoveFromCart</a></li></ul></li><li><a href="module-CartService.html">CartService</a><ul class='methods'><li data-type='method'><a href="module-CartService.html#~GetcartByUser">GetcartByUser</a></li><li data-type='method'><a href="module-CartService.html#~GetcartByUserAndProduct">GetcartByUserAndProduct</a></li><li data-type='method'><a href="module-CartService.html#~addToCart">addToCart</a></li><li data-type='method'><a href="module-CartService.html#~decrementCartQuantity">decrementCartQuantity</a></li><li data-type='method'><a href="module-CartService.html#~incrementCartQuantity">incrementCartQuantity</a></li><li data-type='method'><a href="module-CartService.html#~removeAllFromCart">removeAllFromCart</a></li></ul></li><li><a href="module-ProductService.html">ProductService</a><ul class='methods'><li data-type='method'><a href="module-ProductService.html#~GetProduct">GetProduct</a></li></ul></li><li><a href="module-UserController.html">UserController</a><ul class='methods'><li data-type='method'><a href="module-UserController.html#~CreateUser">CreateUser</a></li><li data-type='method'><a href="module-UserController.html#~GetLogin">GetLogin</a></li><li data-type='method'><a href="module-UserController.html#~GetProfile">GetProfile</a></li><li data-type='method'><a href="module-UserController.html#~GetRegister">GetRegister</a></li><li data-type='method'><a href="module-UserController.html#~Logout">Logout</a></li><li data-type='method'><a href="module-UserController.html#~PostLogin">PostLogin</a></li><li data-type='method'><a href="module-UserController.html#~UpdateProfile">UpdateProfile</a></li></ul></li><li><a href="module-UserService.html">UserService</a><ul class='methods'><li data-type='method'><a href="module-UserService.html#~ChangeProfile">ChangeProfile</a></li><li data-type='method'><a href="module-UserService.html#~CreateUser">CreateUser</a></li><li data-type='method'><a href="module-UserService.html#~GetUser">GetUser</a></li><li data-type='method'><a href="module-UserService.html#~LoginUser">LoginUser</a></li></ul></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">services/cartService.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Cart = require('../models/cart');
+const CartService = {};
+/**
+ * A collection of CartService functions for handling cart's operations
+ * @module CartService 
+ */
+
+/**
+ * This query is based on username .
+ * and return Cart Info.
+ * @function GetcartByUser
+ *
+ * @param {string} productUser - The username.
+ *
+ * @returns {object} - cart Info
+ */
+CartService.getcartByUser = async (productUser) => {
+
+    const Carts = await Cart.find({ productUser: productUser}).exec();
+    return Carts;
+};
+
+
+/**
+ * This query is based on username and productName.
+ * and return Cart Info.
+ * @function GetcartByUserAndProduct
+ *
+ * @param {string} productUser - The userName.
+ * @param {string} productName - The productName.
+ *
+ * @returns {object} - cart Info
+ */
+CartService.getcartByUserAndProduct = async (productUser,productName) => {
+
+    const Carts = await Cart.findOne({ productUser: productUser, productName: productName }).exec();
+    return Carts;
+};
+
+/**
+ * This query is based on product's current qty into cart , username and productName.
+ * 
+ * @function incrementCartQuantity
+ * 
+ * @param {number} productQty -  product's current qty into cart.
+ * @param {string} productUser - The userName.
+ * @param {string} productName - The productName.
+ *
+ */
+CartService.incrementCartQuantity = async (currentQty,productUser,productName) => {
+
+    await Cart.findOneAndUpdate({ productUser: productUser, productName: productName },
+        {
+            productQty: currentQty + 1
+        },
+        { new: true })
+};
+
+/**
+ * This query is based on username , productName and product's price .
+ * 
+ * @function addToCart
+ *  
+ * @param {string} productUser - The userName.
+ * @param {string} productName - The productName.
+ * @param {number} productPrice -  product's price.
+ *
+ */
+CartService.addToCart = async (productUser,productName,productPrice) => {    
+            await Cart.create({
+                productName: productName,
+                productPrice: productPrice,
+                productQty: 1,
+                productUser: productUser,
+            });        
+};
+
+/**
+ * This query is based on product's current qty into cart , username and productName.
+ * 
+ * @function decrementCartQuantity
+ * 
+ * @param {number} productQty -  product's current qty into cart.
+ * @param {string} productUser - The userName.
+ * @param {string} productName - The productName.
+ *
+ */
+CartService.decrementCartQuantity = async (currentQty,productUser,productName) => {
+
+    await Cart.findOneAndUpdate({ productUser: productUser, productName: productName },
+        {
+            productQty: currentQty - 1
+        },
+        { new: true })
+};
+
+/**
+ * This query is based on username and productName.
+ * 
+ * @function removeAllFromCart
+ * 
+ * @param {string} productUser - The userName.
+ * @param {string} productName - The productName.
+ *
+ */
+CartService.removeAllFromCart = async (productUser,productName) => {
+
+    await Cart.findOneAndRemove({ productUser: productUser, productName: productName });
+};
+
+module.exports = CartService;</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Wed Aug 16 2023 18:36:20 GMT+0530 (India Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+</body>
+</html>

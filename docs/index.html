@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CartController.html">CartController</a><ul class='methods'><li data-type='method'><a href="module-CartController.html#~AddToCart">AddToCart</a></li><li data-type='method'><a href="module-CartController.html#~GetCart">GetCart</a></li><li data-type='method'><a href="module-CartController.html#~RemoveFromCart">RemoveFromCart</a></li></ul></li><li><a href="module-CartService.html">CartService</a><ul class='methods'><li data-type='method'><a href="module-CartService.html#~GetcartByUser">GetcartByUser</a></li><li data-type='method'><a href="module-CartService.html#~GetcartByUserAndProduct">GetcartByUserAndProduct</a></li><li data-type='method'><a href="module-CartService.html#~addToCart">addToCart</a></li><li data-type='method'><a href="module-CartService.html#~decrementCartQuantity">decrementCartQuantity</a></li><li data-type='method'><a href="module-CartService.html#~incrementCartQuantity">incrementCartQuantity</a></li><li data-type='method'><a href="module-CartService.html#~removeAllFromCart">removeAllFromCart</a></li></ul></li><li><a href="module-ProductService.html">ProductService</a><ul class='methods'><li data-type='method'><a href="module-ProductService.html#~GetProduct">GetProduct</a></li></ul></li><li><a href="module-UserController.html">UserController</a><ul class='methods'><li data-type='method'><a href="module-UserController.html#~CreateUser">CreateUser</a></li><li data-type='method'><a href="module-UserController.html#~GetLogin">GetLogin</a></li><li data-type='method'><a href="module-UserController.html#~GetProfile">GetProfile</a></li><li data-type='method'><a href="module-UserController.html#~GetRegister">GetRegister</a></li><li data-type='method'><a href="module-UserController.html#~Logout">Logout</a></li><li data-type='method'><a href="module-UserController.html#~PostLogin">PostLogin</a></li><li data-type='method'><a href="module-UserController.html#~UpdateProfile">UpdateProfile</a></li></ul></li><li><a href="module-UserService.html">UserService</a><ul class='methods'><li data-type='method'><a href="module-UserService.html#~ChangeProfile">ChangeProfile</a></li><li data-type='method'><a href="module-UserService.html#~CreateUser">CreateUser</a></li><li data-type='method'><a href="module-UserService.html#~GetUser">GetUser</a></li><li data-type='method'><a href="module-UserService.html#~LoginUser">LoginUser</a></li></ul></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+    <section class="package">
+        <h3> </h3>		
+    </section>
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    <section class="readme usertext">
+        <article><h1>Assessment</h1>
+<p>Welcome to our E-Commerce Application, where you can explore a wide range of products, experience a seamless shopping journey, and manage your purchases with ease.</p>
+<h2>Table of Contents</h2>
+<ul>
+<li><a href="#project-name">Project Name</a>
+<ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#description">Description</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#getting-started">Getting Started</a>
+<ul>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#installation">Installation</a></li>
+</ul>
+</li>
+<li><a href="#usage">Usage</a></li>
+</ul>
+</li>
+</ul>
+<h2>Description</h2>
+<p>This application is one-stop destination for all your shopping needs. which cover login and registration functionality with Authentication of jwt. Having Product Catalog with search functionality by Name and Category. You can add the product into Cart and can go Cart any time.There is Cart icon which notify as number of product added into cart. If you are ready to purchase the product you can purchase from Cart or directly by product detail page without adding into Cart. You can change your profile . You can create the Purchase Order by filling or updating shipping address only. Theres is functionality in which You can see the Order History that describe all product you purchased till now .</p>
+<p>This application having jwt token for authenticaton.
+Menu is created Dynamically, Means you can change logo and menu anytime.
+Mocha Test with Chai library.
+Appplicaiton is Dockerized.</p>
+<h2>Features</h2>
+<ul>
+<li>
+<p><a href=":">User Authentication</a>  Create an account, log in, and enjoy personalized shopping experiences.I have created the JWT token also which pass with api request so that only authenticated user can request api.</p>
+</li>
+<li>
+<p><a href=":">Product Catalog</a> Browse and search through an extensive collection of products, complete with detailed information and images.</p>
+</li>
+<li>
+<p><a href=":">Product Management</a> Easily add products to your cart for future purchase.</p>
+</li>
+<li>
+<p><a href=":">Cart</a> View, manage, and edit the items in your cart before making a purchase decision.</p>
+</li>
+<li>
+<p><a href=":">Order History</a> Access a comprehensive record of all your past purchases, making it simple to track your spending and favorite products.
+-<a href=":">User Profile</a> Update your personal information, shipping addresses, and payment methods for a smoother checkout  process.</p>
+</li>
+<li>
+<p><a href=":">Wishlist</a> Save your favorite products for future reference and quick access.</p>
+</li>
+<li>
+<p><a href=":">Mocha Test</a> This application having Mocha Test with chai library.</p>
+</li>
+<li>
+<p><a href=":">Dockerized</a> Application is dockerized and running on container.</p>
+</li>
+</ul>
+<h2>Getting Started</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li><a href="https://nodejs.org/en/">Node.js</a> (latest LTS version, 18.16.0 as of now, installing via <a href="https://github.com/nvm-sh/nvm">NVM</a> is strongly recommended).</li>
+<li><code>pm2</code> installed globally (<code>npm i pm2 -g</code>).</li>
+<li><a href="Compass">Mongo db</a> version 1.38.1 as of now.</li>
+</ul>
+<h3>Installation</h3>
+<ol>
+<li>
+<p>Clone the repository:</p>
+<pre class="prettyprint source lang-bash"><code>git clone https://github.com/lalitmohan-3pillar/NodeJS.git
+</code></pre>
+</li>
+<li>
+<p><code>npm install</code></p>
+</li>
+<li>
+<p>Start project for development: <code>npm start</code></p>
+</li>
+</ol>
+<h2>Usage</h2>
+<ol>
+<li>Register for a new account or log in if you already have one.</li>
+<li>Browse through the product categories or use the search bar to find your desired items.</li>
+<li>Click on a product to view detailed information, images, and description with functionality of different buttons.</li>
+<li>Add products to your cart by clicking the &quot;Add to Cart&quot; button.</li>
+<li>Review your cart and proceed to checkout when you're ready.</li>
+<li>Select your shipping address  then confirm your order.</li>
+<li>Receive order confirmation and tracking information in Orders Tab.</li>
+<li>Monitor your order history in Orders Tab.</li>
+</ol></article>
+    </section>
+
+
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Wed Aug 16 2023 18:36:20 GMT+0530 (India Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+</body>
+</html>
