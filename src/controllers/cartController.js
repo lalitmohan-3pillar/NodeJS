@@ -41,7 +41,7 @@ const getcart = expressAsyncHandler(async (req, res) => {
  **/
 const addToCart = expressAsyncHandler(async (req, res) => {
 
-    const product = await ProductService.getproduct(req.query.productName);
+    const product = await ProductService.getproduct(req.query.productName);    
     if (product) {
         const Carts = await CartService.getcartByUserAndProduct(req.session.username,req.query.productName);
         if (Carts) {
